@@ -1,5 +1,6 @@
 'use strict'
 const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry:{
@@ -8,7 +9,7 @@ module.exports = {
     },
     output:{
         path:path.join(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: '[name][chunkHash:8].js'
     },
     module:{
         rules:[
@@ -19,9 +20,19 @@ module.exports = {
             // 解析 less
             {test:/.less$/, use:['style-loader', 'css-loader','less-loader']},
             // 解析图片等文件
-            {test:/.(png|jpg|svg|gif)$/, use:['file-loader']}
+            {test:/.(png|jpg|svg|gif)$/, use:[
+                {loader:'file-loader',
+                 options:{
+                     name:'img/[name][hash:8].[ext]'
+                 }}
+            ]}
         ]
     },
+    plugins:[
+        new MiniCssExtractPlugin({
+            filename:'[name][contentHash:8].css'
+        })
+    ],
     // 设置打开端口
     devServer: {
         contentBase: path.join(__dirname, "dist"),
