@@ -3,7 +3,7 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import img from './images/array.jpg'
-import './index.less'
+import './index.css'
 
 class SearchBar extends React.PureComponent{
     render(){
