@@ -19,9 +19,39 @@ module.exports = {
             // 解析Es6 React
             {test:/.js$/ , use:'babel-loader'},
             // 解析 css
-            {test:/.css$/, use:[MiniCssExtractPlugin.loader, 'css-loader']},
+            {test:/.css$/, use:[
+                MiniCssExtractPlugin.loader,
+                 'css-loader',
+                 {
+                    loader:'postcss-loader',
+                    options: {
+                       plugins: () => [
+                           require('autoprefixer') ({
+                                browsers: ['last 2 version', '>1%', 'ios 7']
+                                // last 2 version为兼容浏览器最后两个版本。
+                           })
+                       ]
+                   }
+                }
+               ]
+            },
             // 解析 less
-            {test:/.less$/, use:[MiniCssExtractPlugin.loader, 'css-loader','less-loader']},
+            {test:/.less$/, use:[
+                MiniCssExtractPlugin.loader,
+                 'css-loader',
+                 'less-loader',
+                 {
+                     loader:'postcss-loader',
+                     options: {
+                        plugins: () => [
+                            require('autoprefixer') ({
+                                overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']
+                            })
+                        ]
+                    }
+                 }
+                ]
+            },
             // 解析图片等文件
             {test:/.(png|jpg|svg|gif)$/, use:[
                 {loader:'file-loader',
