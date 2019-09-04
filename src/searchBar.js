@@ -9,7 +9,7 @@ class SearchBar extends React.PureComponent{
     render(){
         return(
            <div className="red">
-               fd现在才d's'f'dsffhhhhb'b'b'b'bd'f'rv'f
+               fd
            </div>
         )
     }

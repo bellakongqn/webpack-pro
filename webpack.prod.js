@@ -24,6 +24,7 @@ module.exports = {
                  'css-loader',
                  {
                     loader:'postcss-loader',
+                    // 自动补齐css前缀
                     options: {
                        plugins: () => [
                            require('autoprefixer') ({
@@ -32,6 +33,17 @@ module.exports = {
                            })
                        ]
                    }
+                },
+                {
+                    loader:'px2rem-loader',
+                    options:{
+                        remUnit: 75,
+                        // x2rem-loader 的 remUnit 选项意思是 1rem=多少像素，
+                        // 结合 lib-flexible 的方案，我们将 px2remLoader 的 options.remUnit 
+                        // 设置成设计稿宽度的 1/10，这里我们假设设计稿宽为 750px
+                        remPrecesion:8
+                        // px-rem小数点后面的位数
+                    }
                 }
                ]
             },
