@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const  { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
     entry:{
@@ -31,7 +32,8 @@ module.exports = {
     plugins:[
         new MiniCssExtractPlugin({
             filename:'[name][contentHash:8].css'
-        })
+        }),
+        new CleanWebpackPlugin()
     ],
     // 设置打开端口
     devServer: {
