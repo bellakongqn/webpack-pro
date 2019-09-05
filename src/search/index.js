@@ -3,8 +3,8 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 import img from './images/array.jpg'
-import { a } from './tree-shaking'
-import './index.css'
+import { a } from '../tree-shaking'
+import './search.css'
 
 if(false){
     a()
