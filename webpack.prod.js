@@ -124,6 +124,7 @@ module.exports = {
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
     },
     mode:'production',
+    // production自动开启treeShaking
 
  
 }
