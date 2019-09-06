@@ -32,7 +32,7 @@ const setMPA = () => {
             new HtmlWebpackPlugin({
                 template:path.join(__dirname,`src/${pageName}/index.html`),
                 filename:`${pageName}.html`,
-                chunks:['vendors','common',pageName],
+                chunks:['common',pageName],
                 inject:true,
                 minify:{
                     html5:true,
@@ -131,20 +131,20 @@ module.exports = {
         }),
         new CleanWebpackPlugin(),
         new webpack.optimize.ModuleConcatenationPlugin(),
-        // new HtmlWebpackExternalsPlugin({
-        //     externals: [
-        //         {
-        //           module: 'react',
-        //           entry: 'https://unpkg.com/react@16.9.0/umd/react.production.min.js',
-        //           global: 'React',
-        //         },
-        //         {
-        //             module: 'react-dom',
-        //             entry: 'https://unpkg.com/react-dom@16.9.0/umd/react-dom.production.min.js',
-        //             global: 'ReactDOM',
-        //         }
-        //     ]
-        // })
+        new HtmlWebpackExternalsPlugin({
+            externals: [
+                {
+                  module: 'react',
+                  entry: 'https://unpkg.com/react@16.9.0/umd/react.production.min.js',
+                  global: 'React',
+                },
+                {
+                    module: 'react-dom',
+                    entry: 'https://unpkg.com/react-dom@16.9.0/umd/react-dom.production.min.js',
+                    global: 'ReactDOM',
+                }
+            ]
+        })
     ].concat(htmlWebpackPlugins),
     // devtool:"inline-source-map",
     // eval 不生成单独得soucreMap文件，sourceMapn被包裹在js文件里面eval()
