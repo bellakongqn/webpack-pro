@@ -1,10 +1,12 @@
 'use strict'
 const path = require('path')
+const glob = require('glob')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin= require('optimize-css-assets-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const glob = require('glob')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+
 
 const setMPA = () => {
 
@@ -126,7 +128,8 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano')
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        new webpack.optimize.ModuleConcatenationPlugin()
     ].concat(htmlWebpackPlugins),
     // devtool:"inline-source-map",
     // eval 不生成单独得soucreMap文件，sourceMapn被包裹在js文件里面eval()
@@ -144,8 +147,8 @@ module.exports = {
         open: true,
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
     },
-    mode:'production',
-    // production自动开启treeShaking
+    mode:'none',
+    // production自动开启treeShaking  scopeHoisting
 
  
 }
