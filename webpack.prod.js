@@ -128,6 +128,10 @@ module.exports = {
         }),
         new CleanWebpackPlugin()
     ].concat(htmlWebpackPlugins),
+    // devtool:"inline-source-map",
+    // eval 不生成单独得soucreMap文件，sourceMapn被包裹在js文件里面eval()
+    // source-map 生成单独的.map文件 js底部 //# sourceMappingURL=index_eed7159b.js.map
+    // inline-source-map map与js文件在一起 ，底部展示map文件信息
     // 设置打开端口
     devServer: {
         contentBase: './dist',

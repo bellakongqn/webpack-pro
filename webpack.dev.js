@@ -1,16 +1,63 @@
 'use strict'
 const path = require('path')
+const glob = require('glob')
+const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 const  { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
+const setMPA = () => {
+
+    const entry = {};
+    const htmlWebpackPlugins =[];
+
+    const entryFiles = glob.sync(path.join(__dirname,'./src/*/index.js'))
+
+    
+
+    Object.keys(entryFiles).map(( index ) => {
+        const entryFile = entryFiles[index]
+        // D:/My/webpack-pro/src/index/index.js
+        // D:/My/webpack-pro/src/search/index.js
+        const match = entryFile.match(/src\/(.*)\/index\.js/)
+        const pageName = match && match[1]
+        // index
+        // search
+        entry[pageName] = entryFile
+
+        htmlWebpackPlugins.push(
+            new HtmlWebpackPlugin({
+                template:path.join(__dirname,`src/${pageName}/index.html`),
+                filename:`${pageName}.html`,
+                chunks:[pageName],
+                inject:true,
+                minify:{
+                    html5:true,
+                    collapseWhitespace:true,
+                    preserveLineBreaks:false,
+                    minifyCSS:true,
+                    minifyJS:true,
+                    removeComments:true,
+                }
+            }),
+        )
+        
+    })
+
+    return {
+        entry,
+        htmlWebpackPlugins
+    }
+
+}
+
+const { entry ,htmlWebpackPlugins} = setMPA()
+
 module.exports = {
-    entry:{
-        index:'./src/index.js',
-        search:'./src/searchBar.js'
-    },
+    entry:entry,
     output:{
         path:path.join(__dirname, 'dist'),
-        filename: '[name][chunkHash:8].js'
+        filename: '[name].js'
     },
     module:{
         rules:[
@@ -24,17 +71,18 @@ module.exports = {
             {test:/.(png|jpg|svg|gif)$/, use:[
                 {loader:'file-loader',
                  options:{
-                     name:'img/[name][hash:8].[ext]'
+                     name:'img/[name].[ext]'
                  }}
             ]}
         ]
     },
     plugins:[
         new MiniCssExtractPlugin({
-            filename:'[name][contentHash:8].css'
+            filename:'[name].css'
         }),
-        new CleanWebpackPlugin()
-    ],
+        new CleanWebpackPlugin(),
+        new webpack.HotModuleReplacementPlugin()
+    ].concat(htmlWebpackPlugins),
     // 设置打开端口
     devServer: {
         contentBase: path.join(__dirname, "dist"),
@@ -47,6 +95,7 @@ module.exports = {
         open: true,
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
     },
+    devtool:"inline-source-map",
     mode:'development',
 
  
