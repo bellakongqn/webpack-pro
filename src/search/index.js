@@ -4,6 +4,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import img from './images/array.jpg'
 import { a } from '../tree-shaking'
+import {tooth} from '../../common/index'
 import './search.css'
 
 if(false){

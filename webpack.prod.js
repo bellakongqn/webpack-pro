@@ -6,6 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin= require('optimize-css-assets-webpack-plugin')
+const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
 
 
 const setMPA = () => {
@@ -31,7 +32,7 @@ const setMPA = () => {
             new HtmlWebpackPlugin({
                 template:path.join(__dirname,`src/${pageName}/index.html`),
                 filename:`${pageName}.html`,
-                chunks:[pageName],
+                chunks:['vendors','common',pageName],
                 inject:true,
                 minify:{
                     html5:true,
@@ -129,7 +130,21 @@ module.exports = {
             cssProcessor: require('cssnano')
         }),
         new CleanWebpackPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin()
+        new webpack.optimize.ModuleConcatenationPlugin(),
+        // new HtmlWebpackExternalsPlugin({
+        //     externals: [
+        //         {
+        //           module: 'react',
+        //           entry: 'https://unpkg.com/react@16.9.0/umd/react.production.min.js',
+        //           global: 'React',
+        //         },
+        //         {
+        //             module: 'react-dom',
+        //             entry: 'https://unpkg.com/react-dom@16.9.0/umd/react-dom.production.min.js',
+        //             global: 'ReactDOM',
+        //         }
+        //     ]
+        // })
     ].concat(htmlWebpackPlugins),
     // devtool:"inline-source-map",
     // eval 不生成单独得soucreMap文件，sourceMapn被包裹在js文件里面eval()
@@ -147,7 +162,32 @@ module.exports = {
         open: true,
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
     },
-    mode:'none',
+    optimization:{
+        // 提取react react-dom
+        // splitChunks: {
+        //     cacheGroups: {
+        //         commons: {
+        //             test: /(react|react-dom)/,
+        //             name: 'vendors',
+        //             chunks: 'all'
+        //         }
+        //     }
+        // }
+        // 提取公共模块
+        splitChunks:{
+            minSize:0,
+            // 文件大小
+            cacheGroups:{
+                commons:{
+                    name:'common',
+                    chunks:'all',
+                    minChunks:4,
+                    // 至少引用几次
+                }
+            }
+        }
+    },
+    mode:'production',
     // production自动开启treeShaking  scopeHoisting
 
  
