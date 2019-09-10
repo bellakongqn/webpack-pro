@@ -7,6 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsWebpackPlugin= require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 
 const setMPA = () => {
@@ -76,7 +77,7 @@ module.exports = {
                     options: {
                        plugins: () => [
                            require('autoprefixer') ({
-                                browsers: ['last 2 version', '>1%', 'ios 7']
+                                overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']
                                 // last 2 version为兼容浏览器最后两个版本。
                            })
                        ]
@@ -130,7 +131,8 @@ module.exports = {
             cssProcessor: require('cssnano')
         }),
         new CleanWebpackPlugin(),
-        new webpack.optimize.ModuleConcatenationPlugin(),
+        // new webpack.optimize.ModuleConcatenationPlugin(),
+        new FriendlyErrorsWebpackPlugin(),
         new HtmlWebpackExternalsPlugin({
             externals: [
                 {
@@ -161,6 +163,10 @@ module.exports = {
         // 开启模块热替换功能后在不刷新整个页面的情况下通过用心模块替换老模块来实现实时预览
         open: true,
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
+    },
+    stats: 'errors-only',
+    performance: {
+       hints:false   
     },
     optimization:{
         // 提取react react-dom

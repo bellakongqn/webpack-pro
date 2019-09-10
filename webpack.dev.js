@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const  { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const setMPA = () => {
 
@@ -81,6 +82,7 @@ module.exports = {
             filename:'[name].css'
         }),
         new CleanWebpackPlugin(),
+        new FriendlyErrorsWebpackPlugin(),
         new webpack.HotModuleReplacementPlugin()
     ].concat(htmlWebpackPlugins),
     // 设置打开端口
@@ -96,6 +98,10 @@ module.exports = {
         // 在DevServer第一次构建完成时，自动用浏览器打开网页，默认是true
     },
     devtool:"inline-source-map",
+    stats: 'errors-only',
+    performance: {
+        hints:false   
+    },
     mode:'development',
 
  
