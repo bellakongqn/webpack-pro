@@ -5,12 +5,19 @@ if(typeof window === 'undefined'){
 const express = require('express');
 const SSR = require('../dist/search-server.js');
 const { renderToString } = require('react-dom/server');
+const fs = require('fs');
+const path = require('path');
+const app = express();
+const template = fs.readFileSync(path.join(__dirname, '../dist/search.html'), 'utf-8');
+
 
 const server = (port) =>{
-    const app = express();
-    app.use(express.static('dist'))
+    
+    app.use(express.static(path.join(__dirname, '../dist')))
+    // 资源权限设置
     app.get('/search' , (req,res) =>{
-        const html = renderMarkUp(renderToString(SSR))
+        // const html = renderMarkUp(renderToString(SSR))
+        const html = template.replace('<!-- html-placeholder -->', renderToString(SSR));
         res.status(200).send(html)
     })
 
@@ -23,16 +30,5 @@ const server = (port) =>{
 server(process.env.PORT||3000)
 
 const renderMarkUp = (str) =>{
-    return `<!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-    </head>
-    <body>
-        <div id="root">${str}</div>
-    </body>
-    </html>`
+    return template.replace('<!-- html-placeholder -->',str)
 }
