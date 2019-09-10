@@ -4,6 +4,7 @@ import React from 'react'
 import ReactDom from 'react-dom'
 import img from './images/array.jpg'
 import { a } from '../tree-shaking'
+import largeNumber from 'large-bella-number'
 import {tooth} from '../../common/index'
 import './search.css'
 
@@ -38,8 +39,10 @@ class SearchBar extends React.PureComponent{
     
     render(){
         const { Text } = this.state
+        const result = largeNumber('9999','1')
         return(
            <div className="red" onClick={this.handleShow}>
+               {result}
                {Text?<Text />:"hahhaha"}
            </div>
         )

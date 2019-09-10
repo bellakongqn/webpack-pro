@@ -65,7 +65,7 @@ module.exports = {
     module:{
         rules:[
             // 解析Es6 React
-            {test:/.js$/ , use:['babel-loader','eslint-loader']},
+            {test:/.js$/ , use:['babel-loader']},
             // 解析 css
             {test:/.css$/, use:[
                 MiniCssExtractPlugin.loader,

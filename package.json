@@ -50,6 +50,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "large-bella-number": "^1.0.0",
     "lib-flexible": "^0.3.2",
     "path": "^0.12.7"
   }
